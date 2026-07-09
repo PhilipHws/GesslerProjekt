@@ -13,20 +13,25 @@ class piece {
 
     slowdrop() {
         dropTimer = 0;
-        if(checkCollision(this.x, this.y + 1)){
+        if(theGrid.checkCollision(this.x, this.y + 1)){
             this.lock();
             newPiece();
         }
-        this.y++;
+        else{
+            this.y++;
+        }
     }
 
     move(direction){
-        if(checkCollision(this.x + direction, this.y)){
-        this.x += direction;
+        if(theGrid.checkCollision(this.x + direction, this.y)){
+        }
+        else{
+            this.x += direction;
         }
     }
 
     lock() {
         theGrid.grid[this.y][this.x] = randomColorIndex;
+        theGrid.points();
     }
 }

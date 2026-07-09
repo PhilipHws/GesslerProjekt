@@ -3,6 +3,9 @@ let row = 20;
 let col = 10;
 let dropInterval = 60;
 let dropTimer = 0;
+let score = 0;
+let timer = 0;
+let gameOver = false;
 const farbe = {
     background:[155, 155, 155],
     red:[255, 48, 48],
@@ -23,15 +26,20 @@ function setup() {
 function startGame() {
   theGrid = new gameGrid(row, col);
   dropTimer = 0;
+  score = 0;
+  timer = 0;
+  gameOver = false;
   newPiece();
 }
 
 function draw() { // Kordinatensystem
   background(220);
   theGrid.drawGrid();
-  piece1.show();
-  if (dropTimer++ >= dropInterval) {
-    piece1.slowdrop();
+  if(!gameOver){
+    piece1.show();
+    if (dropTimer++ >= dropInterval) {
+      piece1.slowdrop();
+    }
   }
 }
 
@@ -45,11 +53,14 @@ function keyPressed() {
   else if (keyCode === 83) {
     piece1.slowdrop();
   }
+  else if (keyCode === 82) {
+    startGame();
+  }
 }
 
 
 function newPiece() {
   randomColorIndex = floor(random(5)+1);
-  const color = farbenArray[randomColorIndex];
+  let color = farbenArray[randomColorIndex];
   piece1 = new piece(floor(col / 2), color);
 }

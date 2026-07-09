@@ -29,11 +29,32 @@ class gameGrid {
 
     checkCollision(x, y) {
       if (x < 0 || x >= this.cols || y >= this.rows) {
-        return false; // Out of bounds
+        return true; // Out of bounds
       }
       if (this.grid[y][x] !== 0) {
-        return false; // Collision with existing piece
+        if(y <= 1){
+          gameOver = true;
+        } 
+        return true; // Collision with existing piece
       }
-      return true; // No collision
+      return false; // No collision
     }
+
+    points(points) {
+      let clearRows = 0;
+      for(let y = 0; y < this.rows; y++){
+        for(let x = 0; x < this.cols; x++){
+          if(this.grid[y][x] === 0){
+            break;
+          }
+        }
+        if(x === this.cols){
+          this.grid.splice(y, 1);
+          this.grid.unshift(new Array(this.cols).fill(0));
+          clearRows++;
+        }
+      }
+      score += clearRows * 100;
+    }
+
 }
