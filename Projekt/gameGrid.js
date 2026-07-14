@@ -39,6 +39,8 @@ class gameGrid {
           if (this.grid[newY][newX] !== 0) {
             if (ability !== 4) {
               if (newY <= 1) {
+                music.stop();
+                boom.play();
                 gameOver = 2;
               }
               return true; // Collision with existing piece
@@ -64,6 +66,7 @@ class gameGrid {
       }
     }
     if (clearRows.length > 0) {
+      line.play();
       this.deleteRows(clearRows);
       score += floor(punkte[clearRows.length - 1] / verzoegerung * (48 / startInterval));
       linien += clearRows.length;
@@ -71,7 +74,7 @@ class gameGrid {
         verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
       }
       else {
-        startInterval = 48 - (floor(linien / 2) * 0.1);
+        startInterval = 48 - (floor(linien / 2) * 0.6);
       }
       console.log(dropInterval);
       console.log(startInterval);

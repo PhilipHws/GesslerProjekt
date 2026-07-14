@@ -16,11 +16,17 @@ let right = 65;
 let down = 83;
 let drop = 32;
 let dreh = 69;
-let fest = 81;
+let fest1 = 81;
+let fest2 = 16;
+let fest3 = 82;
 let linien = 0;
 let verzoegerung = 1;
 let repeat = 0;
+let music;
+let line;
+let boom;
 let punkte = [10, 25, 50, 100];
+
 const farbe = {
   background: [25, 25, 32],
   red: [239, 32, 41],
@@ -72,6 +78,16 @@ function setup() {
   start.style('backgroundColor', 'rgba(247, 211, 8, 0.588)');
   start.position(310, 400);
   start.mousePressed(startGame);
+  music.setVolume(0.005);
+  line.setVolume(0.02);
+  boom.setVolume(0.1);
+  music.loop();
+}
+
+function preload() {
+  music = loadSound('cool.mp3');
+  line = loadSound('line2.mp3');
+  boom = loadSound('boom.mp3');
 }
 
 function startGame() {
@@ -110,8 +126,8 @@ function draw() { // Kordinatensystem
     text("D to move right", 510, 830);
     text("S to move down", 510, 860);
     text("Space to drop", 510, 890);
-    text("Left Click or E to rotate", 510, 920);
-    text("Q to lock yellow in", 510, 950);
+    text("Left Click/E to rotate", 510, 920);
+    text("Q/R/Shift to lock yellow", 510, 950);
     if (frameCount % 60 == 0) {
       timer++;
     }
@@ -125,7 +141,7 @@ function draw() { // Kordinatensystem
 }
 
 function keyPressed() {
-  if (gameOver !== 0) {
+  if (gameOver === 1) {
     if (keyCode === right) {
       piece1.move(-1);
     }
@@ -138,7 +154,7 @@ function keyPressed() {
     else if (keyCode === dreh) {
       piece1.rotate();
     }
-    else if (keyCode === fest) {
+    else if (keyCode === fest1 || keyCode === fest2 || keyCode === fest3) {
       if (piece1.ability === 4) {
         piece1.lock();
       }
@@ -150,6 +166,7 @@ function keyPressed() {
       startGame();
     }
     if (gameOver === 2) {
+      music.loop();
       gameOver = 0;
       repeat = 0;
     }
@@ -158,7 +175,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
-  if (mouseButton === LEFT) { //E?         as
+  if (mouseButton === LEFT) {
     piece1.rotate();
   }
 }
@@ -174,7 +191,7 @@ function startScreen() {
   textAlign(CENTER, CENTER);
   fill(233, 229, 221);
   textSize(100);
-  text("Tetris", width / 2, height / 2 - 200);
+  text("Not Tetris", width / 2, height / 2 - 200);
 }
 
 function gameOverScreen() {    // Game over screen mit punkten ergänzen
