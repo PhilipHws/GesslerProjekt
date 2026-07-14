@@ -2,6 +2,7 @@ let lange = 50;
 let row = 20;
 let col = 10;
 let dropInterval;
+let startInterval = 48;
 let dropTimer = 0;
 let score = 0;
 let timer = 0;
@@ -10,7 +11,6 @@ let gameOver = 0;
 let nextPiece;
 let farbIndex;
 let start;
-// let settings;
 let left = 68;
 let right = 65;
 let down = 83;
@@ -22,12 +22,12 @@ let verzoegerung = 1;
 let repeat = 0;
 let punkte = [10, 25, 50, 100];
 const farbe = {
-  background: [0, 0, 0],
-  red: [255, 48, 48],
-  blue: [48, 48, 255],
-  green: [48, 255, 48],
-  yellow: [255, 255, 48, 150],
-  purple: [204,0,255],
+  background: [25, 25, 32],
+  red: [239, 32, 41],
+  blue: [90, 101, 173],
+  green: [66, 182, 66],
+  yellow: [247, 211, 8, 150],
+  purple: [173, 77, 156],
 }
 const farbenArray = Object.values(farbe);
 
@@ -42,28 +42,41 @@ const formen = {
 };
 const formenArray = Object.values(formen);
 
+const lila = {
+  1: [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
+  2: [[1, 1, 0], [0, 1, 0], [0, 1, 1]],
+  3: [[0, 1, 1], [0, 1, 0], [1, 1, 0]],
+  4: [[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+  5: [[0, 0, 0], [1, 1, 1], [0, 0, 0]],
+  6: [[1, 1, 0], [1, 1, 1], [1, 1, 1]],
+  7: [[1, 0, 1], [1, 1, 1], [1, 1, 1]],
+  8: [[1, 1, 0], [0, 1, 0], [0, 0, 0]],
+  9: [[0, 1, 1], [0, 1, 0], [0, 0, 0]],
+  10: [[0, 1, 0], [1, 1, 1], [0, 1, 0]],
+  11: [[1, 1, 1], [1, 1, 1], [0, 0, 0]],
+  12: [[1, 0, 1], [1, 1, 1], [0, 0, 0]],
+  13: [[0, 0, 0], [0, 1, 1], [0, 0, 0]],
+  14: [[1, 1, 0], [1, 1, 1], [0, 1, 1]],
+  15: [[0, 1, 1], [1, 1, 1], [1, 1, 0]],
+}
+const lilaArray = Object.values(lila);
+
 
 
 function setup() {
   createCanvas(720, 1002);
-  background(0,50,50);
+  background(0, 50, 50);
   start = createButton("Start");
   start.size(100, 40);
   start.style('font-size', '30px');
+  start.style('backgroundColor', 'rgba(247, 211, 8, 0.588)');
   start.position(310, 400);
   start.mousePressed(startGame);
-
-  /*settings = createButton("Settings");
-  settings.size(150, 40);
-  settings.style('font-size', '30px');
-  settings.position(285, 470);
-  settings.mousePressed(settingsScreen);*/
 }
 
 function startGame() {
   repeat = 0;
   start.hide();
-  //settings.hide();
   theGrid = new gameGrid(row, col);
   dropTimer = 0;
   score = 0;
@@ -75,9 +88,9 @@ function startGame() {
 
 function draw() { // Kordinatensystem
   if (gameOver === 1) {
-    dropInterval = 48 * verzoegerung;
-    background(220);
-    stroke(150);
+    dropInterval = startInterval * verzoegerung;
+    background(42, 42, 51);
+    stroke(42, 42, 51);
     theGrid.drawGrid();
     piece1.show();
     vorschau();
@@ -89,17 +102,24 @@ function draw() { // Kordinatensystem
     }
     textAlign(LEFT, TOP);
     textSize(32);
-    fill(0);
-    text("Score: " + score, 505, 70);
-    text("Time: " + timer, 505, 110);
+    fill(233, 229, 221);
+    text("Score: " + score, 505, 20);
+    text("Time: " + timer, 505, 70);
+    textSize(20)
+    text("A to move left", 510, 800);
+    text("D to move right", 510, 830);
+    text("S to move down", 510, 860);
+    text("Space to drop", 510, 890);
+    text("Left Click or E to rotate", 510, 920);
+    text("Q to lock yellow in", 510, 950);
     if (frameCount % 60 == 0) {
       timer++;
+    }
   }
-  }
-  else if(gameOver === 2){
+  else if (gameOver === 2) {
     gameOverScreen();
   }
-  else{
+  else {
     startScreen();
   }
 }
@@ -124,11 +144,14 @@ function keyPressed() {
       }
     }
   }
-  if(gameOver  === 2){
-    if(keyCode === 13){
+  if (keyCode === 13) {
+    if (gameOver === 0) {
+      repeat = 0;
+      startGame();
+    }
+    if (gameOver === 2) {
       gameOver = 0;
       repeat = 0;
-      startScreen();
     }
   }
   return false; // prevent default
@@ -140,39 +163,34 @@ function mousePressed() {
   }
 }
 
-function startScreen(){
+function startScreen() {
   start.show();
-  //settings.show();
-  if(repeat++ <= 160){
-  for(let x = 0; x<20; x++){
-    fill(0, random(10) + 45,random(10) + 45);
-    circle(random(width),random(height), random(80) + 20);
+  if (repeat++ <= 160) {
+    for (let x = 0; x < 20; x++) {
+      fill(0, random(10) + 45, random(10) + 45);
+      circle(random(width), random(height), random(80) + 20);
+    }
   }
-}
   textAlign(CENTER, CENTER);
-  fill(255, 255, 48);
-  textSize(50);
-  text("Tetris", width / 2, height/ 2 - 200);
-}
-
-function settingsScreen(){
-  
+  fill(233, 229, 221);
+  textSize(100);
+  text("Tetris", width / 2, height / 2 - 200);
 }
 
 function gameOverScreen() {    // Game over screen mit punkten ergänzen
-  if(repeat++ <= 160){
-    for(let x = 0; x<20; x++){
-      fill(random(40)+ 164, random(10)+ 10, random(10)+10);
-      circle(random(width+20),random(height), random(80) +20 );
+  if (repeat++ <= 160) {
+    for (let x = 0; x < 20; x++) {
+      fill(random(60) + 190, random(25) + 15, random(25) + 16);
+      circle(random(width + 20), random(height), random(80) + 20);
     }
   }
   noStroke();
-  textSize(64);
-  fill(0);
+  textSize(130);
+  fill(233, 229, 221);
   textAlign(CENTER, CENTER);
-  text("Game Over", width / 2, height / 2 - 100);
-  fill(0);
-  text("Score: " + score,width/2  , height / 2 + 0 );
+  text("Game Over", width / 2, height / 2 - 180);
+  textSize(90);
+  text("Score: " + score, width / 2, height / 2 + 0);
   stroke(0);
 }
 
@@ -191,10 +209,21 @@ function newPiece() {
 
 function vorschau() {
   fill(farbenArray[farbIndex]);
-  for (let i = 0; i < nextPiece.length; i++) {
-    for (let j = 0; j < nextPiece[i].length; j++) {
-      if (nextPiece[i][j] === 1) {
-        square(j * lange * 0.4 + 630, i * lange * 0.4 + 5, lange * 0.4);
+  if (nextPiece !== formenArray[0]) {
+    for (let i = 0; i < nextPiece.length; i++) {
+      for (let j = 0; j < nextPiece[i].length; j++) {
+        if (nextPiece[i][j] === 1) {
+          square(j * lange * 0.85 + 550, i * lange * 0.85 + height / 2, lange * 0.85);
+        }
+      }
+    }
+  }
+  else {
+    for (let i = 0; i < nextPiece.length; i++) {
+      for (let j = 0; j < nextPiece[i].length; j++) {
+        if (nextPiece[i][j] === 1) {
+          square(j * lange * 0.85 + 525, i * lange * 0.85 + height / 2, lange * 0.85);
+        }
       }
     }
   }
@@ -206,40 +235,7 @@ function newPieceVariables() {
     nextPiece = formenArray[floor(random(formenArray.length))];
     farbIndex = floor(random(5) + 1);
     if (farbIndex === 5) {
-      nextPiece = [[0, 0, 0], [0, 1, 0], [0, 0, 0]];
-      for (let i = 0; i < 1; i++) {
-        let wahrscheinlichkeit = 10;
-        if (random(wahrscheinlichkeit) < 5) {
-          wahrscheinlichkeit -= 0.5;
-          nextPiece[1 - i][0] = 1;
-        }
-        else {
-          nextPiece[1 - i][0] = 0;
-        }
-        if (random(wahrscheinlichkeit) < 5) {
-          wahrscheinlichkeit -= 0.5;
-          nextPiece[1 + i][0] = 1;
-        }
-        else {
-          nextPiece[1 - i][0] = 0;
-        }
-        for (let j = 0; j < 1; j++) {
-          if (random(wahrscheinlichkeit) < 5) {
-            wahrscheinlichkeit -= 0.5;
-            nextPiece[i][1 + j] = 1;
-          }
-          else {
-            nextPiece[i][j] = 0;
-          }
-          if (random(wahrscheinlichkeit) < 5) {
-            wahrscheinlichkeit -= 0.5;
-            nextPiece[i][1 - j] = 1;
-          }
-          else {
-            nextPiece[i][j] = 0;
-          }
-        }
-      }
+      nextPiece = lilaArray[floor(random(lilaArray.length))]
     }
   }
 }

@@ -65,10 +65,16 @@ class gameGrid {
     }
     if (clearRows.length > 0) {
       this.deleteRows(clearRows);
-      score += floor(punkte[clearRows.length-1] / verzoegerung);
+      score += floor(punkte[clearRows.length - 1] / verzoegerung * (48 / startInterval));
       linien += clearRows.length;
-      verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
+      if (dropInterval >= 10) {
+        verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
+      }
+      else {
+        startInterval = 48 - (floor(linien / 2) * 0.1);
+      }
       console.log(dropInterval);
+      console.log(startInterval);
     }
   }
 
