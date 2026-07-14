@@ -27,7 +27,7 @@ let line;
 let boom;
 let punkte = [10, 25, 50, 100];
 
-const farbe = {
+const farbe = {  //Objekt mit den RGB werten der Farben
   background: [25, 25, 32],
   red: [239, 32, 41],
   blue: [90, 101, 173],
@@ -35,9 +35,9 @@ const farbe = {
   yellow: [247, 211, 8, 150],
   purple: [173, 77, 156],
 }
-const farbenArray = Object.values(farbe);
+const farbenArray = Object.values(farbe);   //RGB werte des Objekts in ein Array schreiben
 
-const formen = {
+const formen = {      //Objekt das in einer Matrix sagt welche werte 1 sind somit form der blöcke angibt
   I: [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
   O: [[1, 1], [1, 1]],
   T: [[0, 1, 0], [1, 1, 1], [0, 0, 0]],
@@ -46,9 +46,9 @@ const formen = {
   J: [[1, 0, 0], [1, 1, 1], [0, 0, 0]],
   L: [[0, 0, 1], [1, 1, 1], [0, 0, 0]]
 };
-const formenArray = Object.values(formen);
+const formenArray = Object.values(formen);    //speichert die Matrixen in ein array
 
-const lila = {
+const lila = {      //Objekt das in einer Matrix sagt welche werte 1 sind somit form angibt    hier nur die Lilanen Blöcke
   1: [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
   2: [[1, 1, 0], [0, 1, 0], [0, 1, 1]],
   3: [[0, 1, 1], [0, 1, 0], [1, 1, 0]],
@@ -65,11 +65,11 @@ const lila = {
   14: [[1, 1, 0], [1, 1, 1], [0, 1, 1]],
   15: [[0, 1, 1], [1, 1, 1], [1, 1, 0]],
 }
-const lilaArray = Object.values(lila);
+const lilaArray = Object.values(lila);    //speichert die Matrixen in ein array
 
 
 
-function setup() {
+function setup() {    //Knopf wird erstellt und musik wird eingestellt
   createCanvas(720, 1002);
   background(0, 50, 50);
   start = createButton("Start");
@@ -84,13 +84,13 @@ function setup() {
   music.loop();
 }
 
-function preload() {
+function preload() {    //Musik wird geladen und in eine Variable gespeichert
   music = loadSound('cool.mp3');
   line = loadSound('line2.mp3');
   boom = loadSound('boom.mp3');
 }
 
-function startGame() {
+function startGame() {   //Konfiguriert die Variablen so das das spiel gestartet werden kann und startet es dann somit
   repeat = 0;
   start.hide();
   theGrid = new gameGrid(row, col);
@@ -102,7 +102,7 @@ function startGame() {
   newPiece();
 }
 
-function draw() { // Kordinatensystem
+function draw() { //Sie ruft die Funktionen entsprechend der gameover variable auf, und stellt ein paar generelle dinge so wit text dar
   if (gameOver === 1) {
     dropInterval = startInterval * verzoegerung;
     background(42, 42, 51);
@@ -140,7 +140,7 @@ function draw() { // Kordinatensystem
   }
 }
 
-function keyPressed() {
+function keyPressed() {  //prüft welche knöpfe gedrückt werden und ruft entsprechende funktionen auf
   if (gameOver === 1) {
     if (keyCode === right) {
       piece1.move(-1);
@@ -180,7 +180,7 @@ function mousePressed() {
   }
 }
 
-function startScreen() {
+function startScreen() { //TitleScreen von dem man das Spiel startet mit Knopf oder Enter
   start.show();
   if (repeat++ <= 160) {
     for (let x = 0; x < 20; x++) {
@@ -194,7 +194,7 @@ function startScreen() {
   text("Not Tetris", width / 2, height / 2 - 200);
 }
 
-function gameOverScreen() {    // Game over screen mit punkten ergänzen
+function gameOverScreen() {    // Game over screen mit erreichten Punkten, wenn man hier enter drückt kommt man zum titlescreen
   if (repeat++ <= 160) {
     for (let x = 0; x < 20; x++) {
       fill(random(60) + 190, random(25) + 15, random(25) + 16);
@@ -211,8 +211,7 @@ function gameOverScreen() {    // Game over screen mit punkten ergänzen
   stroke(0);
 }
 
-function newPiece() {
-
+function newPiece() { //erstellt ein neuen stein als objekt anhand zuvor definierten variablem
   for (let i = 0; i < 10; i++) {
     if (floor(nextPiece.length / 2 + i) === 5) {
       if (!theGrid.checkCollision(i, 0, nextPiece, farbIndex)) {
@@ -224,7 +223,7 @@ function newPiece() {
   newPieceVariables();
 }
 
-function vorschau() {
+function vorschau() {  //Zeigt an wo und wie ein stein landen würde wenn man ihn full droppt
   fill(farbenArray[farbIndex]);
   if (nextPiece !== formenArray[0]) {
     for (let i = 0; i < nextPiece.length; i++) {
@@ -246,7 +245,7 @@ function vorschau() {
   }
 }
 
-function newPieceVariables() {
+function newPieceVariables() {  //erstellt die Variablen für den nächsten stein, in einer extra funktion damit man die Variablen hat um nächsten stein anzeigen zu lassen
   if (gameOver === 1) {
     dropTimer = 0;
     nextPiece = formenArray[floor(random(formenArray.length))];

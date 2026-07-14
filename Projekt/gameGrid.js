@@ -6,28 +6,28 @@ class gameGrid {
     this.grid = this.createGrid();
   }
 
-  createGrid() {
+  createGrid() { //erstellt das Grid entsprechend der Übergebenen variblen im constructer und füllt sie mit nullen die eine leere zelle symboliseren
     let grid = [];
     for (let y = 0; y < this.rows; y++) {
       grid[y] = [];
       for (let x = 0; x < this.cols; x++) {
-        grid[y][x] = 0; // 0 represents an empty cell
+        grid[y][x] = 0;
       }
     }
     return grid;
   }
 
 
-  drawGrid() {
+  drawGrid() {   //zeichnet das Grid anhand der in ihm stehenden Werte und des Arrays der RGB werte
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        fill(farbenArray[this.grid[y][x]][0], farbenArray[this.grid[y][x]][1], farbenArray[this.grid[y][x]][2]);
+        fill(farbenArray[this.grid[y][x]]);
         square(x * lange + 1, y * lange + 1, lange);
       }
     }
   }
 
-  checkCollision(x, y, form, ability) {
+  checkCollision(x, y, form, ability) {  //guckt für jeden teil des übergeben blocks ob er mit dem rand boden oder einem anderen block kollidiert und gibt true or falls zurück
     for (let i = 0; i < form.length; i++) {
       for (let j = 0; j < form[i].length; j++) {
         if (form[i][j] === 1) {
@@ -52,7 +52,7 @@ class gameGrid {
     return false; // No collision
   }
 
-  points(points) {
+  points(points) {  // checkt alle reihen ob sie voll sind und speichert welche voll sind in ein array das an deleteRows weitergeben wird, dann berechnet es den Score anhand wie viele linien gleichzeitig gecleared wurden,
     let clearRows = []
     for (let y = 0; y < this.rows; y++) {
       let test = 0;
@@ -76,12 +76,10 @@ class gameGrid {
       else {
         startInterval = 48 - (floor(linien / 2) * 0.6);
       }
-      console.log(dropInterval);
-      console.log(startInterval);
     }
   }
 
-  deleteRows(rows) {
+  deleteRows(rows) {  //Löscht Die reihen die Übergeben wurden und fügt neue mit 0 gefüllte reihen an den anfang des grids ein 
     for (let i = 0; i < rows.length; i++) {
       let rowIndex = rows[i];
       this.grid.splice(rowIndex, 1); // Remove the filled row

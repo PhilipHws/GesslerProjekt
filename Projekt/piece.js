@@ -9,7 +9,7 @@ class piece {
     }
 
 
-    show() {
+    show() {  //zeigt die position des derzeitig fallenden blocks an
         fill(this.color);
         for (let i = 0; i < this.form.length; i++) {
             for (let j = 0; j < this.form[i].length; j++) {
@@ -27,7 +27,7 @@ class piece {
         this.whereDrop();
     }
 
-    whereDrop() {
+    whereDrop() {  //Guckt wie tief der block gehen kann ohne zu kollidieren und zeigt ihn da mit seiner entsprechenden farbe und etwas durchsichtig an
         let dropY = this.y;
         while (!theGrid.checkCollision(this.x, dropY + 1, this.form, this.ability)) {
             dropY++;
@@ -42,7 +42,7 @@ class piece {
         }
     }
 
-    slowdrop() {
+    slowdrop() {  //lässt den Block eins runter gehen
         dropTimer = 0;
         if (theGrid.checkCollision(this.x, this.y + 1, this.form, this.ability)) {
             this.lock();
@@ -52,14 +52,14 @@ class piece {
         }
     }
 
-    fullDrop() {
+    fullDrop() {   //lässt den Block soweit runter gehen bis er kollidiert
         while (!theGrid.checkCollision(this.x, this.y + 1, this.form, this.ability)) {
             this.y++;
         }
         this.lock();
     }
 
-    move(direction) {
+    move(direction) {  //bewegt den block nach rechts oder links wenn es erlaubt ist
         if (theGrid.checkCollision(this.x + direction, this.y, this.form, this.ability)) {
         }
         else {
@@ -67,7 +67,7 @@ class piece {
         }
     }
 
-    lock() {
+    lock() {   //schreibt die farben des Blocks ins grid, lässt dann punkte berechnen und erstellt ein neuen block
         for (let i = 0; i < this.form.length; i++) {
             for (let j = 0; j < this.form[i].length; j++) {
                 if (this.form[i][j] === 1) {
@@ -79,7 +79,7 @@ class piece {
         newPiece();
     }
 
-    rotate() {
+    rotate() {  //rotiert den Block nach rechts
         let newForm = [];
         for (let i = 0; i < this.form[0].length; i++) {
             newForm[i] = [];
