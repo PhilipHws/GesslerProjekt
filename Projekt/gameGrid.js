@@ -21,7 +21,7 @@ class gameGrid {
   drawGrid() {
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        fill(farbenArray[this.grid[y][x]]);
+        fill(farbenArray[this.grid[y][x]][0], farbenArray[this.grid[y][x]][1], farbenArray[this.grid[y][x]][2]);
         square(x * lange + 1, y * lange + 1, lange);
       }
     }
@@ -38,8 +38,8 @@ class gameGrid {
           }
           if (this.grid[newY][newX] !== 0) {
             if (ability !== 4) {
-              if (newY <= 0) {
-                gameOver = true;
+              if (newY <= 1) {
+                gameOver = 2;
               }
               return true; // Collision with existing piece
             }
@@ -65,7 +65,10 @@ class gameGrid {
     }
     if (clearRows.length > 0) {
       this.deleteRows(clearRows);
-      score += 2**(clearRows.length-1) * 100;
+      score += floor(punkte[clearRows.length-1] / verzoegerung);
+      linien += clearRows.length;
+      verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
+      console.log(dropInterval);
     }
   }
 
