@@ -38,11 +38,11 @@ class gameGrid {
           }
           if (this.grid[newY][newX] !== 0) {
             if (ability !== 4) {
-              if (newY <= 1) {
-                music.stop();
-                boom.play();
-                gameOver = 2;
-              }
+              //if (newY <= 1) {
+                //music.stop();
+                //boom.play();
+                //gameOver = 2;
+              //}
               return true; // Collision with existing piece
             }
           }
@@ -68,14 +68,14 @@ class gameGrid {
     if (clearRows.length > 0) {
       line.play();
       this.deleteRows(clearRows);
-      score += floor(punkte[clearRows.length - 1] / verzoegerung * (48 / startInterval));
+      score += floor(punkte[clearRows.length - 1] / verzoegerung);//score += floor(punkte[clearRows.length - 1] / verzoegerung * (48 / startInterval));
       linien += clearRows.length;
-      if (dropInterval >= 10) {
-        verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
-      }
-      else {
-        startInterval = 48 - (floor(linien / 2) * 0.6);
-      }
+      //if (dropInterval >= 10) {
+      verzoegerung = (0.9 ** ((linien -1) * 3)) ** (1 / 4); //verzoegerung = 1.0 - (floor(linien / 3) * 0.1);
+      //}
+      //else {
+        //startInterval = 48 - (floor(linien / 2) * 0.6);
+      //}
     }
   }
 

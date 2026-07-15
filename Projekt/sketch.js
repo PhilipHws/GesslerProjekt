@@ -218,6 +218,10 @@ function newPiece() { //erstellt ein neuen stein als objekt anhand zuvor definie
         piece1 = new piece(i, farbIndex, nextPiece);
         break;
       }
+      else { //new
+        boom.play();
+        gameOver = 2;
+      }
     }
   }
   newPieceVariables();
