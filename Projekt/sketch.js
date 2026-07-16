@@ -25,6 +25,7 @@ let repeat = 0;
 let music;
 let line;
 let boom;
+let meinCanvas;
 let punkte = [10, 25, 50, 100];
 
 const farbe = {  //Objekt mit den RGB werten der Farben
@@ -70,13 +71,14 @@ const lilaArray = Object.values(lila);    //speichert die Matrixen in ein array
 
 
 function setup() {    //Knopf wird erstellt und musik wird eingestellt
-  createCanvas(720, 1002);
+  meinCanvas = createCanvas(720, 1002);
+  meinCanvas.position((windowWidth - width)/2, (windowHeight - height)/2);
   background(0, 50, 50);
   start = createButton("Start");
   start.size(100, 40);
   start.style('font-size', '30px');
   start.style('backgroundColor', 'rgba(247, 211, 8, 0.588)');
-  start.position(310, 400);
+  start.position(windowWidth / 2 - 50, windowHeight/2 -30);
   start.mousePressed(startGame);
   music.setVolume(0.005);
   line.setVolume(0.02);
@@ -119,8 +121,8 @@ function draw() { //Sie ruft die Funktionen entsprechend der gameover variable a
     textAlign(LEFT, TOP);
     textSize(32);
     fill(233, 229, 221);
-    text("Score: " + score, 505, 20);
-    text("Time: " + timer, 505, 70);
+    text("Score: " + score, 505, 55);
+    text("Time: " + timer, 505, 105);
     textSize(20)
     text("A to move left", 510, 800);
     text("D to move right", 510, 830);
