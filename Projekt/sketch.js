@@ -72,13 +72,13 @@ const lilaArray = Object.values(lila);    //speichert die Matrixen in ein array
 
 function setup() {    //Knopf wird erstellt und musik wird eingestellt
   meinCanvas = createCanvas(720, 1002);
-  meinCanvas.position((windowWidth - width)/2, (windowHeight - height)/2);
+  meinCanvas.position((windowWidth - width) / 2, 0);
   background(0, 50, 50);
   start = createButton("Start");
   start.size(100, 40);
   start.style('font-size', '30px');
   start.style('backgroundColor', 'rgba(247, 211, 8, 0.588)');
-  start.position(windowWidth / 2 - 50, windowHeight/2 -30);
+  start.position(windowWidth / 2 - 50, windowHeight / 2 - 30);
   start.mousePressed(startGame);
   music.setVolume(0.005);
   line.setVolume(0.02);
@@ -94,6 +94,8 @@ function preload() {    //Musik wird geladen und in eine Variable gespeichert
 
 function startGame() {   //Konfiguriert die Variablen so das das spiel gestartet werden kann und startet es dann somit
   repeat = 0;
+  linien = 0;
+  verzoegerung = 1;
   start.hide();
   theGrid = new gameGrid(row, col);
   dropTimer = 0;
@@ -121,8 +123,8 @@ function draw() { //Sie ruft die Funktionen entsprechend der gameover variable a
     textAlign(LEFT, TOP);
     textSize(32);
     fill(233, 229, 221);
-    text("Score: " + score, 505, 55);
-    text("Time: " + timer, 505, 105);
+    text("Score: " + score, 505, 20);
+    text("Time: " + timer, 505, 70);
     textSize(20)
     text("A to move left", 510, 800);
     text("D to move right", 510, 830);
@@ -177,8 +179,10 @@ function keyPressed() {  //prüft welche knöpfe gedrückt werden und ruft entsp
 }
 
 function mousePressed() {
-  if (mouseButton === LEFT) {
-    piece1.rotate();
+  if (gameOver == 1) {
+    if (mouseButton === LEFT) {
+      piece1.rotate();
+    }
   }
 }
 
@@ -229,7 +233,7 @@ function newPiece() { //erstellt ein neuen stein als objekt anhand zuvor definie
   newPieceVariables();
 }
 
-function vorschau() {  //Zeigt an wo und wie ein stein landen würde wenn man ihn full droppt
+function vorschau() {  //Zeigt an welcher Block als nächstes kommt
   fill(farbenArray[farbIndex]);
   if (nextPiece !== formenArray[0]) {
     for (let i = 0; i < nextPiece.length; i++) {
